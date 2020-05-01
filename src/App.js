@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Header from './components/Header'
 
+import'./global.css'
 
-function App() {
-  return (
-    <div>
-      Oi
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+      <Header/>
+        <Switch>
+          <Route exact path='/' component={Home} />
+        </Switch>
+      </BrowserRouter>
+    )
+  }
 }
 
-export default App;
+export default App
