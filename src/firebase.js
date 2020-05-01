@@ -34,5 +34,8 @@ class Firebase {
       firebaseApp.auth().onAuthStateChanged(resolve)
     })
   }
+  getCurrent(){
+    return firebaseApp.auth().currentUser && firebaseApp.auth().currentUser.email
+  }
 }
 export default new Firebase()
