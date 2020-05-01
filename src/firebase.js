@@ -19,6 +19,7 @@ class Firebase {
     if (!firebaseApp.apps.length) {
       firebaseApp.initializeApp(firebaseConfig);
     }
+    this.database = firebaseApp.database()
   }
   login(email, password) {
     return firebaseApp.auth().signInWithEmailAndPassword(email, password)
