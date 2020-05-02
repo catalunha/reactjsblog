@@ -9,10 +9,14 @@ class NewPost extends Component {
     this.state = {
       titulo: '',
       imagem: '',
+      arquivo: null,
+      arquivoPath: '',
       descricao: '',
       alert: ''
     }
     this.cadastrar = this.cadastrar.bind(this)
+    this.handleFile = this.handleFile.bind(this)
+    this.handleUpload = this.handleUpload.bind(this)
   }
   componentDidMount() {
     if (!firebase.getCurrent()) {
@@ -36,6 +40,39 @@ class NewPost extends Component {
       this.setState({ alert: 'Preencha todos os campos !' })
     }
   }
+  handleFile = async (e) => {
+    if (e.target.files[0]) {
+      let arquivoLocal = e.target.files[0];
+      if (arquivoLocal.type === 'image/png' || arquivoLocal.type === 'image/jpeg') {
+        await this.setState({ arquivo: arquivoLocal })
+        this.handleUpload()
+      } else {
+        alert('Envia uma imagem do tipo png/jpeg')
+        this.setState({ arquivo: null })
+      }
+    }
+  }
+  handleUpload = async () => {
+    const {arquivo}  = this.state
+    const currentUid = firebase.getCurrentUid()
+
+    const uploadTasks = firebase.storage.ref(`posts/${currentUid}/${arquivo.name}`).put(arquivo);
+
+    // await uploadTasks.on('state_changed',
+    //   (snapshot) => {
+    //     //Progress
+    //     console.log('Upload em progresso')
+
+    //   }, (error) => {
+    //     //Erro
+    //     console.log('Error imagem: ' + error)
+
+    //   }, (sucess) => {
+    //     //Sucesso
+    //     console.log('Sucesso no upload')
+    //   })
+
+  }
   render() {
     return (
       <div>
@@ -48,6 +85,8 @@ class NewPost extends Component {
           <input type='text' placeholder='Nome do post' value={this.state.titulo} autoFocus onChange={(e) => this.setState({ titulo: e.target.value })} /><br />
           <label>Url da imagem:</label><br />
           <input type='text' placeholder='Url da capa' value={this.state.imagem} autoFocus onChange={(e) => this.setState({ imagem: e.target.value })} /><br />
+          <label>Arquivo:</label><br />
+          <input type='file' onChange={this.handleFile} /><br />
           <label>Descrição:</label><br />
           <textarea type='text' placeholder='Alguma descrição' value={this.state.descricao} autoFocus onChange={(e) => this.setState({ descricao: e.target.value })} /><br />
           <button type='submit'>Cadastrar</button>
