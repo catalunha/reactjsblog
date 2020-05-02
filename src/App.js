@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import firebase from './firebase'
-
 //pages
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Register from './pages/Register'
+import NewPost from './pages/NewPost'
 //components
 import Header from './components/Header'
 //css
@@ -17,7 +17,7 @@ class App extends Component {
     firebaseInicialized: false
   }
   componentDidMount() {
-    // firebase.logout()
+
     firebase.isInitialized()
       .then((resultado) => {
         this.setState({ firebaseInicialized: resultado })
@@ -31,8 +31,9 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/login' component={Login} />
-            <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path='/register' component={Register} />
+            <Route exact path='/dashboard' component={Dashboard} />
+            <Route exact path='/dashboard/newpost' component={NewPost} />
           </Switch>
         </BrowserRouter>
       ) :
