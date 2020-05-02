@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import firebase from '../../firebase'
 import './index.css'
 
 class NewPost extends Component {
@@ -9,11 +10,31 @@ class NewPost extends Component {
       titulo: '',
       imagem: '',
       descricao: '',
+      alert: ''
     }
     this.cadastrar = this.cadastrar.bind(this)
   }
-  cadastrar(e) {
+  componentDidMount() {
+    if (!firebase.getCurrent()) {
+      this.props.history.replace('/')
+      return null
+    }
+  }
+  cadastrar = async (e) => {
     e.preventDefault()
+    if (this.state.titulo !== '' && this.state.imagem !== '' && this.state.descricao !== '') {
+      let posts = firebase.database.ref('posts')
+      let chave = posts.push().key
+      await posts.child(chave).set({
+        titulo: this.state.titulo,
+        imagem: this.state.imagem,
+        descricao: this.state.descricao,
+        autor: localStorage.nome
+      })
+      this.props.history.push('/dashboard')
+    } else {
+      this.setState({ alert: 'Preencha todos os campos !' })
+    }
   }
   render() {
     return (
@@ -22,11 +43,12 @@ class NewPost extends Component {
           <Link to='/dashboard'>Voltar</Link>
         </header>
         <form onSubmit={this.cadastrar} id='new-form'>
+          <span>{this.state.alert}</span>
           <label>Titulo:</label><br />
           <input type='text' placeholder='Nome do post' value={this.state.titulo} autoFocus onChange={(e) => this.setState({ titulo: e.target.value })} /><br />
           <label>Url da imagem:</label><br />
           <input type='text' placeholder='Url da capa' value={this.state.imagem} autoFocus onChange={(e) => this.setState({ imagem: e.target.value })} /><br />
-          <label>Url da imagem:</label><br />
+          <label>Descrição:</label><br />
           <textarea type='text' placeholder='Alguma descrição' value={this.state.descricao} autoFocus onChange={(e) => this.setState({ descricao: e.target.value })} /><br />
           <button type='submit'>Cadastrar</button>
         </form>

@@ -31,7 +31,11 @@ form#new-form{
 form#new-form{
   margin-bottom: 10px;
 }
-
+form#new-form span{
+  text-align: center;
+  color: #ff0000;
+  font-size: 15px;
+}
 form#new-form input[type=text]{
   height: 40px;
   border-radius: 5px;
