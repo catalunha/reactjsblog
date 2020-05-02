@@ -36,6 +36,18 @@ form#new-form span{
   color: #ff0000;
   font-size: 15px;
 }
+form#new-form label{
+  margin-bottom: 15px;
+}
+form#new-form img{
+  margin-bottom: 15px;
+  width: 200px;
+  height: 100px;
+}
+
+form#new-form progress{
+  margin-bottom: 15px;
+}
 form#new-form input[type=text]{
   height: 40px;
   border-radius: 5px;
