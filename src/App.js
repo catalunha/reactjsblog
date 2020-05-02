@@ -17,6 +17,7 @@ class App extends Component {
     firebaseInicialized: false
   }
   componentDidMount() {
+    // firebase.logout()
     firebase.isInitialized()
       .then((resultado) => {
         this.setState({ firebaseInicialized: resultado })

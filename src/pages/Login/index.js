@@ -19,6 +19,7 @@ class Login extends Component {
     }
   }
   entrar(e) {
+    
     e.preventDefault()
     this.login()
   }
